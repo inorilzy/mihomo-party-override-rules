@@ -1,0 +1,206 @@
+# 基于布丁狗订阅转换 override 改造
+# 规则源: MetaCubeX/meta-rules-dat + blackmatrix7/ios_rule_script
+# 分组: PROXY(主) / AUTO / AIGC / Telegram / Google / 地区(HK TW SG US JP)
+
+proxy-groups:
+  - name: PROXY
+    type: select
+    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Static.png
+    proxies:
+      - AUTO
+      - DOWNLOAD
+      - 🇭🇰 HK
+      - 🇹🇼 TW
+      - 🇸🇬 SG
+      - 🇺🇸 US
+      - 🇯🇵 JP
+      - DIRECT
+  - name: AUTO
+    type: url-test
+    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
+    include-all: true
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|0\.1倍|0\.01倍|下载|download
+    interval: 120
+    tolerance: 50
+  - name: 🤖 AIGC
+    type: select
+    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
+    proxies:
+      - 🇯🇵 JP
+      - 🇸🇬 SG
+      - 🇺🇸 US
+      - DIRECT
+  - name: Telegram
+    type: select
+    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png
+    proxies:
+      - 🇭🇰 HK
+      - 🇸🇬 SG
+      - 🇯🇵 JP
+      - 🇺🇸 US
+  - name: Google
+    type: select
+    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
+    proxies:
+      - 🇭🇰 HK
+      - 🇸🇬 SG
+      - 🇯🇵 JP
+      - 🇺🇸 US
+  - name: 🇭🇰 HK
+    type: url-test
+    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/HK.png
+    include-all: true
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|0\.1倍|0\.01倍|下载|download
+    filter: (?i)香港|Hong Kong|HK|🇭🇰
+    interval: 120
+    tolerance: 50
+  - name: 🇹🇼 TW
+    type: url-test
+    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/TW.png
+    include-all: true
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|0\.1倍|0\.01倍|下载|download
+    filter: (?i)台湾|Taiwan|TW|🇹🇼
+    interval: 120
+    tolerance: 50
+  - name: 🇸🇬 SG
+    type: url-test
+    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/SG.png
+    include-all: true
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|0\.1倍|0\.01倍|下载|download
+    filter: (?i)新加坡|Singapore|🇸🇬
+    interval: 120
+    tolerance: 50
+  - name: 🇺🇸 US
+    type: url-test
+    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/US.png
+    include-all: true
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|0\.1倍|0\.01倍|下载|download
+    filter: (?i)美国|USA|🇺🇸
+    interval: 120
+    tolerance: 50
+  - name: 🇯🇵 JP
+    type: url-test
+    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/JP.png
+    include-all: true
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|0\.1倍|0\.01倍|下载|download
+    filter: (?i)日本|Japan|🇯🇵
+    interval: 120
+    tolerance: 50
+  - name: DOWNLOAD
+    type: url-test
+    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Thunder.png
+    include-all: true
+    filter: (?i)0\.1倍|0\.01倍|下载|download
+    interval: 120
+    tolerance: 50
+
+rule-providers:
+  private:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/private.yaml
+    path: ./ruleset/private.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  cn_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/cn.yaml
+    path: ./ruleset/cn_domain.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  telegram_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml
+    path: ./ruleset/telegram_domain.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  google_domain:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.yaml
+    path: ./ruleset/google_domain.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  geolocation-!cn:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml
+    path: ./ruleset/geolocation-!cn.yaml
+    behavior: domain
+    interval: 86400
+    format: yaml
+    type: http
+  cn_ip:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.yaml
+    path: ./ruleset/cn_ip.yaml
+    behavior: ipcidr
+    interval: 86400
+    format: yaml
+    type: http
+  telegram_ip:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.yaml
+    path: ./ruleset/telegram_ip.yaml
+    behavior: ipcidr
+    interval: 86400
+    format: yaml
+    type: http
+  google_ip:
+    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.yaml
+    path: ./ruleset/google_ip.yaml
+    behavior: ipcidr
+    interval: 86400
+    format: yaml
+    type: http
+  copilot:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Copilot/Copilot.yaml
+    path: ./ruleset/copilot.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  claude:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Claude/Claude.yaml
+    path: ./ruleset/claude.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  bard:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/BardAI/BardAI.yaml
+    path: ./ruleset/bard.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  openai:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI.yaml
+    path: ./ruleset/openai.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+  steam:
+    url: https://testingcf.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Steam/Steam.yaml
+    path: ./ruleset/steam.yaml
+    behavior: classical
+    interval: 86400
+    format: yaml
+    type: http
+
+rules:
+  - "RULE-SET,private,DIRECT"
+  # ---- 自定义规则（放在规则集之前，优先命中）----
+  - "DOMAIN-SUFFIX,inorilzy.com,DIRECT"
+  - "RULE-SET,copilot,🤖 AIGC"
+  - "RULE-SET,bard,🤖 AIGC"
+  - "RULE-SET,openai,🤖 AIGC"
+  - "RULE-SET,claude,🤖 AIGC"
+  - "RULE-SET,steam,PROXY"
+  - "RULE-SET,telegram_domain,Telegram"
+  - "RULE-SET,telegram_ip,Telegram"
+  - "RULE-SET,google_domain,Google"
+  - "RULE-SET,google_ip,Google"
+  - "RULE-SET,geolocation-!cn,PROXY"
+  - "RULE-SET,cn_domain,DIRECT"
+  - "RULE-SET,cn_ip,DIRECT"
+  - "MATCH,PROXY"
