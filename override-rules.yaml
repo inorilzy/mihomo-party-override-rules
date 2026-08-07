@@ -48,27 +48,6 @@ proxy-groups:
     interval: 120
     tolerance: 50
 
-  - name: Telegram
-    type: select
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Telegram.png
-    proxies:
-      - 🇸🇬 SG
-      - 🇭🇰 HK
-      - 🇯🇵 JP
-      - 🇺🇸 US
-      - AUTO
-
-  - name: Google
-    type: select
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Google.png
-    proxies:
-      - 🇭🇰 HK
-      - 🇹🇼 TW
-      - 🇯🇵 JP
-      - 🇸🇬 SG
-      - 🇺🇸 US
-      - AUTO
-
   # 地区组：保留折扣节点；只排除信息/广告假节点
   - name: 🇭🇰 HK
     type: url-test
@@ -175,20 +154,6 @@ rule-providers:
     interval: 86400
     format: yaml
     type: http
-  telegram_domain:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/telegram.yaml
-    path: ./ruleset/telegram_domain.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
-  google_domain:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/google.yaml
-    path: ./ruleset/google_domain.yaml
-    behavior: domain
-    interval: 86400
-    format: yaml
-    type: http
   geolocation-!cn:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geosite/geolocation-!cn.yaml
     path: ./ruleset/geolocation-!cn.yaml
@@ -199,20 +164,6 @@ rule-providers:
   cn_ip:
     url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/cn.yaml
     path: ./ruleset/cn_ip.yaml
-    behavior: ipcidr
-    interval: 86400
-    format: yaml
-    type: http
-  telegram_ip:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/telegram.yaml
-    path: ./ruleset/telegram_ip.yaml
-    behavior: ipcidr
-    interval: 86400
-    format: yaml
-    type: http
-  google_ip:
-    url: https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@meta/geo/geoip/google.yaml
-    path: ./ruleset/google_ip.yaml
     behavior: ipcidr
     interval: 86400
     format: yaml
@@ -280,13 +231,6 @@ rule-providers:
     interval: 86400
     format: text
     type: http
-  GoogleCN:
-    url: https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/GoogleCN.list
-    path: ./ruleset/GoogleCN.list
-    behavior: classical
-    interval: 86400
-    format: text
-    type: http
   Download:
     url: https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Download.list
     path: ./ruleset/Download.list
@@ -319,11 +263,6 @@ rules:
   - "RULE-SET,claude,🤖 AIGC"
   - "RULE-SET,SteamCN,DIRECT"
   - "RULE-SET,steam,PROXY"
-  - "RULE-SET,telegram_domain,Telegram"
-  - "RULE-SET,telegram_ip,Telegram"
-  - "RULE-SET,GoogleCN,DIRECT"
-  - "RULE-SET,google_domain,Google"
-  - "RULE-SET,google_ip,Google"
   - "RULE-SET,Download,DOWNLOAD"
   - "RULE-SET,geolocation-!cn,PROXY"
   - "RULE-SET,cn_domain,DIRECT"
