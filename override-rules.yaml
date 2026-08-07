@@ -38,16 +38,15 @@ proxy-groups:
     interval: 120
     tolerance: 50
 
+  # AIGC：只用台湾家宽（HiNet / 台湾3 / 台湾|…），排除 BGP 与超时的台湾2
   - name: 🤖 AIGC
-    type: select
+    type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    proxies:
-      - 🇯🇵 JP
-      - 🇸🇬 SG
-      - 🇺🇸 US
-      - 🇭🇰 HK
-      - AUTO
-      - DIRECT
+    include-all: true
+    filter: (?i)HiNet|台湾3|台湾\s*\|
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|BGP|台湾2
+    interval: 120
+    tolerance: 50
 
   - name: Telegram
     type: select
