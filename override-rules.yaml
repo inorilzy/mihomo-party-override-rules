@@ -11,6 +11,20 @@
 # - DOWNLOAD 收 0.1/0.01 倍 与 倍率:0.x
 # - 其它 兜底未匹配命名
 
+# Clash Mi 兼容：未追加内置覆写时也保证内核 DNS 可用
+# TUN 的启用与 DNS 劫持仍由客户端设置管理
+dns:
+  enable: true
+  enhanced-mode: fake-ip
+  default-nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+
 proxy-groups:
   - name: PROXY
     type: select
