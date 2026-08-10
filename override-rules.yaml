@@ -6,9 +6,9 @@
 # 2) 落地国+运营商+ [倍率:x] + 深港专线/转XX
 #
 # 分组策略:
-# - 地区组按落地识别（转美国/转日本/深港…），保留折扣节点
+# - 地区组按落地识别（转美国/转日本/深港…），排除 0.1/0.01 下载节点
 # - AUTO 排除折扣与高倍率专线，偏向日常质量节点
-# - DOWNLOAD 收 0.1/0.01 倍 与 倍率:0.x
+# - DOWNLOAD 仅收 0.1/0.01 倍（含 [倍率:0.1/0.01]）
 # - 其它 兜底未匹配命名
 
 # Clash Mi 兼容：未追加内置覆写时也保证内核 DNS 可用
@@ -58,17 +58,17 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
     filter: (?i)HiNet|台湾3|台湾\s*\|
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|BGP|台湾2
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|BGP|台湾2|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
     interval: 120
     tolerance: 50
 
-  # 地区组：保留折扣节点；只排除信息/广告假节点
+  # 地区组：保留普通折扣节点；0.1/0.01 下载节点除外
   - name: 🇭🇰 HK
     type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/HK.png
     include-all: true
     # 排除信息节点，以及“深港专线转美国/其它落地”（这些应进目标地区组）
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|深港专线转(?!香港)
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|深港专线转(?!香港)|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
     filter: (?i)香港|Hong\s*Kong|🇭🇰|深港|HKC|HKT|HGC|(?:^|[^A-Za-z0-9])HK(?:[^A-Za-z0-9]|$)
     interval: 120
     tolerance: 50
@@ -77,7 +77,7 @@ proxy-groups:
     type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/TW.png
     include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
     filter: (?i)台湾|臺灣|Taiwan|🇹🇼|HiNet|(?:^|[^A-Za-z0-9])TW(?:[^A-Za-z0-9]|$)
     interval: 120
     tolerance: 50
@@ -86,7 +86,7 @@ proxy-groups:
     type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/SG.png
     include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
     filter: (?i)新加坡|Singapore|🇸🇬|(?:^|[^A-Za-z0-9])SG(?:[^A-Za-z0-9]|$)
     interval: 120
     tolerance: 50
@@ -95,7 +95,7 @@ proxy-groups:
     type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/US.png
     include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
     filter: (?i)美国|USA|🇺🇸|圣何塞|洛杉矶|San\s*Jose|Los\s*Angeles|(?:^|[^A-Za-z0-9])US(?:[^A-Za-z0-9]|$)
     interval: 120
     tolerance: 50
@@ -104,7 +104,7 @@ proxy-groups:
     type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/JP.png
     include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
     filter: (?i)日本|Japan|🇯🇵|东京|東京|Tokyo|Webarena|(?:^|[^A-Za-z0-9])JP(?:[^A-Za-z0-9]|$)
     interval: 120
     tolerance: 50
@@ -113,7 +113,7 @@ proxy-groups:
     type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/KR.png
     include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
     filter: (?i)韩国|韓國|Korea|🇰🇷|(?:^|[^A-Za-z0-9])KR(?:[^A-Za-z0-9]|$)
     interval: 120
     tolerance: 50
@@ -122,7 +122,7 @@ proxy-groups:
     type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/DE.png
     include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
     filter: (?i)德国|德國|Germany|🇩🇪|(?:^|[^A-Za-z0-9])DE(?:[^A-Za-z0-9]|$)
     interval: 120
     tolerance: 50
@@ -131,18 +131,18 @@ proxy-groups:
     type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/GB.png
     include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
     filter: (?i)英国|英國|London|伦敦|🇬🇧|(?:^|[^A-Za-z0-9])UK(?:[^A-Za-z0-9]|$)
     interval: 120
     tolerance: 50
 
-  # 折扣/低倍率：0.1倍 / 0.01倍 / 倍率:0.x
+  # 下载专用：只收 0.1倍 / 0.01倍 / 倍率:0.1 / 倍率:0.01
   - name: DOWNLOAD
     type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Thunder.png
     include-all: true
     exclude-filter: (?i)剩余流量|套餐到期|Traffic|Expire|Premium|频道|订阅|ISP|长期有效|官网
-    filter: (?i)0\.1倍|0\.01倍|下载|download|倍率\s*:\s*0(?:\.\d+)?
+    filter: (?i)(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
     interval: 120
     tolerance: 50
 
@@ -151,7 +151,7 @@ proxy-groups:
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Static.png
     include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|香港|Hong\s*Kong|🇭🇰|深港|HKC|HKT|HGC|(?:^|[^A-Za-z0-9])HK(?:[^A-Za-z0-9]|$)|台湾|臺灣|Taiwan|🇹🇼|HiNet|(?:^|[^A-Za-z0-9])TW(?:[^A-Za-z0-9]|$)|新加坡|Singapore|🇸🇬|(?:^|[^A-Za-z0-9])SG(?:[^A-Za-z0-9]|$)|美国|USA|🇺🇸|圣何塞|洛杉矶|San\s*Jose|Los\s*Angeles|(?:^|[^A-Za-z0-9])US(?:[^A-Za-z0-9]|$)|日本|Japan|🇯🇵|东京|東京|Tokyo|Webarena|(?:^|[^A-Za-z0-9])JP(?:[^A-Za-z0-9]|$)|韩国|韓國|Korea|🇰🇷|(?:^|[^A-Za-z0-9])KR(?:[^A-Za-z0-9]|$)|德国|德國|Germany|🇩🇪|(?:^|[^A-Za-z0-9])DE(?:[^A-Za-z0-9]|$)|英国|英國|London|伦敦|🇬🇧|(?:^|[^A-Za-z0-9])UK(?:[^A-Za-z0-9]|$)
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|香港|Hong\s*Kong|🇭🇰|深港|HKC|HKT|HGC|(?:^|[^A-Za-z0-9])HK(?:[^A-Za-z0-9]|$)|台湾|臺灣|Taiwan|🇹🇼|HiNet|(?:^|[^A-Za-z0-9])TW(?:[^A-Za-z0-9]|$)|新加坡|Singapore|🇸🇬|(?:^|[^A-Za-z0-9])SG(?:[^A-Za-z0-9]|$)|美国|USA|🇺🇸|圣何塞|洛杉矶|San\s*Jose|Los\s*Angeles|(?:^|[^A-Za-z0-9])US(?:[^A-Za-z0-9]|$)|日本|Japan|🇯🇵|东京|東京|Tokyo|Webarena|(?:^|[^A-Za-z0-9])JP(?:[^A-Za-z0-9]|$)|韩国|韓國|Korea|🇰🇷|(?:^|[^A-Za-z0-9])KR(?:[^A-Za-z0-9]|$)|德国|德國|Germany|🇩🇪|(?:^|[^A-Za-z0-9])DE(?:[^A-Za-z0-9]|$)|英国|英國|London|伦敦|🇬🇧|(?:^|[^A-Za-z0-9])UK(?:[^A-Za-z0-9]|$)|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
 
 rule-providers:
   private:
