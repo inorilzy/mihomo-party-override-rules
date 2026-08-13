@@ -52,12 +52,12 @@ proxy-groups:
     interval: 120
     tolerance: 50
 
-  # AIGC：台湾家宽（HiNet / 台湾3 / 台湾|…）+ us-novixixlink 直连/中转，排除 BGP 与超时的台湾2
+  # AIGC：台湾家宽（HiNet / 台湾3 / 台湾|…）+ us-novixlink 直连/中转，排除 BGP 与超时的台湾2
   - name: 🤖 AIGC
     type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
     include-all: true
-    filter: (?i)HiNet|台湾3|台湾\s*\||us-novixixlink-(?:via-zgocloud|direct)
+    filter: (?i)HiNet|台湾3|台湾\s*\||us-novixlink-(?:via-zgocloud|direct)
     exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|BGP|台湾2|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
     interval: 120
     tolerance: 50
