@@ -52,16 +52,6 @@ proxy-groups:
     interval: 120
     tolerance: 50
 
-  # AIGC：台湾家宽（HiNet / 台湾3 / 台湾|…）+ us-novixlink 直连/中转，排除 BGP 与超时的台湾2
-  - name: 🤖 AIGC
-    type: url-test
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/OpenAI.png
-    include-all: true
-    filter: (?i)HiNet|台湾3|台湾\s*\||us-novixlink-(?:via-zgocloud|direct)
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|BGP|台湾2|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
-    interval: 120
-    tolerance: 50
-
   # 地区组：保留普通折扣节点；0.1/0.01 下载节点除外
   - name: 🇭🇰 HK
     type: url-test
@@ -278,12 +268,12 @@ rules:
   - "RULE-SET,BanProgramAD,REJECT"
   # ---- 自定义规则（放在规则集之前，优先命中）----
   - "DOMAIN-SUFFIX,inorilzy.com,DIRECT"
-  - "DOMAIN-SUFFIX,grok.com,🤖 AIGC"
-  - "RULE-SET,grok,🤖 AIGC"
-  - "RULE-SET,copilot,🤖 AIGC"
-  - "RULE-SET,bard,🤖 AIGC"
-  - "RULE-SET,openai,🤖 AIGC"
-  - "RULE-SET,claude,🤖 AIGC"
+  - "DOMAIN-SUFFIX,grok.com,PROXY"
+  - "RULE-SET,grok,PROXY"
+  - "RULE-SET,copilot,PROXY"
+  - "RULE-SET,bard,PROXY"
+  - "RULE-SET,openai,PROXY"
+  - "RULE-SET,claude,PROXY"
   - "RULE-SET,SteamCN,DIRECT"
   - "RULE-SET,steam,PROXY"
   - "RULE-SET,Download,DOWNLOAD"
