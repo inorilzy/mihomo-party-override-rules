@@ -268,6 +268,8 @@ rules:
   - "RULE-SET,BanProgramAD,REJECT"
   # ---- 自定义规则（放在规则集之前，优先命中）----
   - "DOMAIN-SUFFIX,inorilzy.com,DIRECT"
+  - "DOMAIN-SUFFIX,nophotonics.com,DIRECT"
+  - "DOMAIN-SUFFIX,local,DIRECT"
   - "DOMAIN-SUFFIX,grok.com,PROXY"
   - "RULE-SET,grok,PROXY"
   - "RULE-SET,copilot,PROXY"
