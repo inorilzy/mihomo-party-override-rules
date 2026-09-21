@@ -16,6 +16,11 @@
 dns:
   enable: true
   enhanced-mode: fake-ip
+  fake-ip-filter:
+    - "+.inorilzy.com"
+    - "+.nophotonics.com"
+    - "+.lan"
+    - "+.local"
   default-nameserver:
     - 223.5.5.5
     - 119.29.29.29
@@ -267,6 +272,9 @@ rules:
   - "RULE-SET,BanAD,REJECT"
   - "RULE-SET,BanProgramAD,REJECT"
   # ---- 自定义规则（放在规则集之前，优先命中）----
+  # 个人自建 VPS / AI 服务端直连（免代理、免 Fake-IP 虚拟网卡劫持）
+  - "IP-CIDR,64.83.30.42/32,DIRECT,no-resolve"
+  - "IP-CIDR,38.127.121.51/32,DIRECT,no-resolve"
   - "DOMAIN-SUFFIX,inorilzy.com,DIRECT"
   - "DOMAIN-SUFFIX,nophotonics.com,DIRECT"
   - "DOMAIN-SUFFIX,local,DIRECT"
