@@ -1,15 +1,12 @@
 # 基于布丁狗订阅转换 override 改造
 # 规则源: MetaCubeX/meta-rules-dat + blackmatrix7/ios_rule_script
 #
-# 适配两套机场命名:
-# 1) 旗帜+中文+0.1倍/0.01倍
-# 2) 落地国+运营商+ [倍率:x] + 深港专线/转XX
-#
-# 分组策略:
-# - 地区组按落地识别（转美国/转日本/深港…），排除 0.1/0.01 下载节点
-# - AUTO 排除折扣与高倍率专线，偏向日常质量节点
-# - DOWNLOAD 仅收 0.1/0.01 倍（含 [倍率:0.1/0.01]）
-# - 其它 兜底未匹配命名
+# 分组策略（极简，只保留 3 个组，GLOBAL 由内核自动生成）：
+# - PROXY  手动选择：AUTO / US / DIRECT
+# - AUTO   全部节点按延迟自动切换，仅排除流量、到期这类信息节点
+# - US     按名称前缀/关键词匹配 us 开头的节点
+# 所有分组都用 include-all + filter/exclude-filter 动态匹配，
+# 不写死任何具体节点名，节点增删改名都不会出现 proxy not found
 
 # Clash Mi 兼容：未追加内置覆写时也保证内核 DNS 可用
 # TUN 的启用与 DNS 劫持仍由客户端设置管理
@@ -36,117 +33,27 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Static.png
     proxies:
       - AUTO
-      - 🇭🇰 HK
-      - 🇯🇵 JP
-      - 🇹🇼 TW
-      - 🇸🇬 SG
-      - 🇺🇸 US
-      - 🇰🇷 KR
-      - 🇩🇪 DE
-      - 🇬🇧 UK
-      - DOWNLOAD
-      - 其它
+      - US
       - DIRECT
 
-  # 日常自动：排除折扣/信息/高倍率专线，优先普通质量节点
+  # 自动选择：按延迟自动切换；只排除流量/到期这类信息节点，不写死任何节点名
   - name: AUTO
     type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
     include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|测试|0\.1倍|0\.01倍|下载|download|倍率\s*:\s*0(?:\.\d+)?|倍率\s*:\s*[2-9](?:\.\d+)?|深港专线(?!转)
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|测试
     interval: 120
     tolerance: 50
 
-  # 地区组：保留普通折扣节点；0.1/0.01 下载节点除外
-  - name: 🇭🇰 HK
-    type: url-test
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/HK.png
-    include-all: true
-    # 排除信息节点，以及“深港专线转美国/其它落地”（这些应进目标地区组）
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|深港专线转(?!香港)|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
-    filter: (?i)香港|Hong\s*Kong|🇭🇰|深港|HKC|HKT|HGC|(?:^|[^A-Za-z0-9])HK(?:[^A-Za-z0-9]|$)
-    interval: 120
-    tolerance: 50
-
-  - name: 🇹🇼 TW
-    type: url-test
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/TW.png
-    include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
-    filter: (?i)台湾|臺灣|Taiwan|🇹🇼|HiNet|(?:^|[^A-Za-z0-9])TW(?:[^A-Za-z0-9]|$)
-    interval: 120
-    tolerance: 50
-
-  - name: 🇸🇬 SG
-    type: url-test
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/SG.png
-    include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
-    filter: (?i)新加坡|Singapore|🇸🇬|(?:^|[^A-Za-z0-9])SG(?:[^A-Za-z0-9]|$)
-    interval: 120
-    tolerance: 50
-
-  - name: 🇺🇸 US
+  # 美国组：按名称前缀/关键词匹配 us 开头的节点，不写死节点名
+  - name: US
     type: url-test
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/US.png
     include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
-    filter: (?i)美国|USA|🇺🇸|圣何塞|洛杉矶|San\s*Jose|Los\s*Angeles|(?:^|[^A-Za-z0-9])US(?:[^A-Za-z0-9]|$)
+    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|测试
+    filter: (?i)^us|美国|USA|🇺🇸|圣何塞|洛杉矶|San\s*Jose|Los\s*Angeles
     interval: 120
     tolerance: 50
-
-  - name: 🇯🇵 JP
-    type: url-test
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/JP.png
-    include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
-    filter: (?i)日本|Japan|🇯🇵|东京|東京|Tokyo|Webarena|(?:^|[^A-Za-z0-9])JP(?:[^A-Za-z0-9]|$)
-    interval: 120
-    tolerance: 50
-
-  - name: 🇰🇷 KR
-    type: url-test
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/KR.png
-    include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
-    filter: (?i)韩国|韓國|Korea|🇰🇷|(?:^|[^A-Za-z0-9])KR(?:[^A-Za-z0-9]|$)
-    interval: 120
-    tolerance: 50
-
-  - name: 🇩🇪 DE
-    type: url-test
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/DE.png
-    include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
-    filter: (?i)德国|德國|Germany|🇩🇪|(?:^|[^A-Za-z0-9])DE(?:[^A-Za-z0-9]|$)
-    interval: 120
-    tolerance: 50
-
-  - name: 🇬🇧 UK
-    type: url-test
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/GB.png
-    include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
-    filter: (?i)英国|英國|London|伦敦|🇬🇧|(?:^|[^A-Za-z0-9])UK(?:[^A-Za-z0-9]|$)
-    interval: 120
-    tolerance: 50
-
-  # 下载专用：只收 0.1倍 / 0.01倍 / 倍率:0.1 / 倍率:0.01
-  - name: DOWNLOAD
-    type: url-test
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Thunder.png
-    include-all: true
-    exclude-filter: (?i)剩余流量|套餐到期|Traffic|Expire|Premium|频道|订阅|ISP|长期有效|官网
-    filter: (?i)(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
-    interval: 120
-    tolerance: 50
-
-  # 未落入地区关键词的节点
-  - name: 其它
-    type: select
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Static.png
-    include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|香港|Hong\s*Kong|🇭🇰|深港|HKC|HKT|HGC|(?:^|[^A-Za-z0-9])HK(?:[^A-Za-z0-9]|$)|台湾|臺灣|Taiwan|🇹🇼|HiNet|(?:^|[^A-Za-z0-9])TW(?:[^A-Za-z0-9]|$)|新加坡|Singapore|🇸🇬|(?:^|[^A-Za-z0-9])SG(?:[^A-Za-z0-9]|$)|美国|USA|🇺🇸|圣何塞|洛杉矶|San\s*Jose|Los\s*Angeles|(?:^|[^A-Za-z0-9])US(?:[^A-Za-z0-9]|$)|日本|Japan|🇯🇵|东京|東京|Tokyo|Webarena|(?:^|[^A-Za-z0-9])JP(?:[^A-Za-z0-9]|$)|韩国|韓國|Korea|🇰🇷|(?:^|[^A-Za-z0-9])KR(?:[^A-Za-z0-9]|$)|德国|德國|Germany|🇩🇪|(?:^|[^A-Za-z0-9])DE(?:[^A-Za-z0-9]|$)|英国|英國|London|伦敦|🇬🇧|(?:^|[^A-Za-z0-9])UK(?:[^A-Za-z0-9]|$)|(?:^|[^0-9])0\.0?1\s*倍|倍率\s*:\s*0\.0?1(?:[^0-9]|$)
 
 rule-providers:
   private:
@@ -286,7 +193,6 @@ rules:
   - "RULE-SET,claude,PROXY"
   - "RULE-SET,SteamCN,DIRECT"
   - "RULE-SET,steam,PROXY"
-  - "RULE-SET,Download,DOWNLOAD"
   # ---- Google Play 下载修复 ----
   # googleapis.cn 会被 GeoSite CN 判为直连，但国行 Play 的服务实际走它，
   # 直连不通导致 Play 能打开能搜索、下载却一直卡在"等待中"
