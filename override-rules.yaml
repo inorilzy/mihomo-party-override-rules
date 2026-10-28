@@ -1,9 +1,8 @@
 # 基于布丁狗订阅转换 override 改造
 # 规则源: MetaCubeX/meta-rules-dat + blackmatrix7/ios_rule_script
 #
-# 分组策略（极简，只保留 3 个组，GLOBAL 由内核自动生成）：
-# - PROXY  手动选择：AUTO / US / DIRECT
-# - AUTO   全部节点按延迟自动切换，仅排除流量、到期这类信息节点
+# 分组策略（极简，只保留 2 个组，GLOBAL 由内核自动生成）：
+# - PROXY  手动选择：US / DIRECT
 # - US     按名称前缀/关键词匹配 us 开头的节点
 # 所有分组都用 include-all + filter/exclude-filter 动态匹配，
 # 不写死任何具体节点名，节点增删改名都不会出现 proxy not found
@@ -32,18 +31,8 @@ proxy-groups:
     type: select
     icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Static.png
     proxies:
-      - AUTO
       - US
       - DIRECT
-
-  # 自动选择：按延迟自动切换；只排除流量/到期这类信息节点，不写死任何节点名
-  - name: AUTO
-    type: url-test
-    icon: https://testingcf.jsdelivr.net/gh/Orz-3/mini@master/Color/Urltest.png
-    include-all: true
-    exclude-filter: (?i)GB|Traffic|Expire|Premium|频道|订阅|ISP|流量|到期|重置|剩余|套餐|长期有效|官网|飞机|telegram|测试
-    interval: 120
-    tolerance: 50
 
   # 美国组：按名称前缀/关键词匹配 us 开头的节点，不写死节点名
   - name: US
